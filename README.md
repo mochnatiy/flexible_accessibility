@@ -47,6 +47,4 @@ Usage:
 ======================
 
 ## Copyright
-Copyright (c) 2012-2014 Sergey Avanesov and 7 Pikes, Inc.
-
-![7pikes logo](https://github.com/7Pikes/flexible_accessibility/wiki/Logo.png)
+Copyright (c) 2012-2017 Sergei Avanesov

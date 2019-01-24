@@ -2,7 +2,7 @@ Flexible Accessibility
 
 A simple library for setting access rules, based on analysis of current resources (e.g. controllers (with namespaces) and actions) that exists in application.
 
-[![Code Climate](https://codeclimate.com/github/7Pikes/flexible_accessibility.png)](https://codeclimate.com/github/7Pikes/flexible_accessibility)
+[![Code Climate](https://codeclimate.com/github/mochnatiy/flexible_accessibility.png)](https://codeclimate.com/github/mochnatiy/flexible_accessibility)
 
 Installation:
 
@@ -14,7 +14,7 @@ Installation:
 
   then do
 
-        rails g flexible_accessibility:install
+            rails g flexible_accessibility:install
 
   to install migrations
 
@@ -30,21 +30,21 @@ Usage:
 
   Add some routes to check but close all others
 
-        authorize :only => [:index, :new]
+        authorize only: [:index, :new]
 
   Add all routes except :index to check, :index remains closed
 
-        authorize :except => [:index]
+        authorize except: [:index]
 
   Add :index and :new to check, skip (open) create for all
 
-        authorize :only => [:index, :new], :skip => [:create]
+        authorize only: [:index, :new], skip: [:create]
 
   Open all routes for all
 
-        authorize :skip => :all
+        authorize skip: :all
 
 ======================
 
 ## Copyright
-Copyright (c) 2012-2017 Sergei Avanesov
+Copyright (c) 2012-2019 Sergei Avanesov

@@ -2,7 +2,7 @@ module FlexibleAccessibility
   class FlexibleAccessibilityException < StandardError
     attr_reader :action, :subject
 
-    def initialize(action = nil, subject = nil)
+    def initialize(action=nil, subject=nil)
       @action = action
       @subject = subject
     end
@@ -24,7 +24,7 @@ module FlexibleAccessibility
 	class AccessDeniedException < FlexibleAccessibilityException
 
     def message
-      I18n.t('flexible_accessibility.errors.access_denied', :action => @action)
+      I18n.t('flexible_accessibility.errors.access_denied', action: @action)
     end
 
     private
@@ -53,10 +53,13 @@ module FlexibleAccessibility
 
     private
     def default_message
-      'No way to detect a logged user - may you have forgot to define a current_user helper'
+      <<-TXT
+        No way to detect a logged user,
+        maybe you have forgot to define a current_user helper
+      TXT
     end
   end
- 
+
   class UnknownUserException < FlexibleAccessibilityException
 
     def message
@@ -76,14 +79,18 @@ module FlexibleAccessibility
     end
 
     private
+
     def default_message
-      'The value of any \'authorize\' macro argument should be declared as Array'
+      <<-TXT
+        The value of any 'authorize' macro argument should be declared as Array
+      TXT
     end
   end
 
   class IncorrectArgumentException < FlexibleAccessibilityException
 
     private
+
     def default_message
       nil
     end

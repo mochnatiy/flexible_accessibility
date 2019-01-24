@@ -14,27 +14,37 @@ module FlexibleAccessibility
 
     def app_routes
       app_routes_as_hash if @@routes.empty?
+
       @@routes
     end
 
     def verifiable_routes_list
-      routes_table, list = @current_controller.instance_variable_get(:@_routes_table), []
-        
+      routes_table = @current_controller.instance_variable_get(:@_routes_table)
+      list = []
+
       unless routes_table.nil?
         list = available_routes_list if routes_table[:all]
         list = routes_table[:only] unless routes_table[:only].nil?
-        list = available_routes_list - routes_table[:except] unless routes_table[:except].nil?
+
+        unless routes_table[:except].nil?
+          list = available_routes_list - routes_table[:except]
+        end
       end
 
       list
     end
 
     def non_verifiable_routes_list
-      routes_table, list = @current_controller.instance_variable_get(:@_routes_table), []
+      routes_table = @current_controller.instance_variable_get(:@_routes_table)
+      list = []
 
       unless routes_table.nil?
         unless routes_table[:skip].nil?
-          list = routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
+          list = if routes_table[:skip].first == 'all'
+            available_routes_list
+          else
+            routes_table[:skip]
+          end
         end
       end
 
@@ -44,8 +54,11 @@ module FlexibleAccessibility
     private
 
     def available_routes_list
-      available_routes = self.app_routes[@current_controller.to_s.gsub(/Controller/, '')]
+      available_routes =
+        self.app_routes[@current_controller.to_s.gsub(/Controller/, '')]
+
       # available_routes = self.action_methods if available_routes.nil?
+
       raise NoWayToDetectAvailableRoutesException if available_routes.nil?
       available_routes.to_set
     end
@@ -53,15 +66,25 @@ module FlexibleAccessibility
     # All controller classes placed in :default scope
     def app_controllers_recursive(path)
       invalid_entries = ['..', '.', 'concerns']
+
       (Dir.entries(path) - invalid_entries).each do |entry|
         if File.directory?(path + entry)
           app_controllers_recursive(path + entry + '/')
         else
           if File.extname(entry) == '.rb'
             parent_directory = File.dirname(path + entry).split(/\//).last
-            container = parent_directory == 'controllers' ? 'default' : parent_directory
+
+            container = if parent_directory == 'controllers'
+              'default'
+            else
+              parent_directory
+            end
+
             @controllers[container.to_sym] ||= []
-            @controllers[container.to_sym] << File.basename(path + entry, '.*') unless File.basename(path + entry, '.*') == 'application_controller'
+
+            unless File.basename(path + entry, '.*') == 'application_controller'
+              @controllers[container.to_sym] << File.basename(path + entry, '.*')
+            end
           end
         end
       end
@@ -72,6 +95,7 @@ module FlexibleAccessibility
     def app_routes_as_hash
       Rails.application.routes.routes.each do |route|
         controller = route.defaults[:controller]
+
         unless controller.nil?
           key = controller.split('/').map { |p| p.camelize }.join('::')
           @@routes[key] ||= []

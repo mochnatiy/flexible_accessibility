@@ -20,14 +20,22 @@ module FlexibleAccessibility
     class << self
       def all
         permissions = []
+
         RouteProvider.new.app_controllers.each do |scope|
           namespace = scope.first.to_s
+
           scope.last.each do |resource|
             resource = "#{namespace}/#{resource}" unless namespace == 'default'
-            permissions << Permission.new(:resource => resource.gsub(/_controller/, ''), 
-                                          :actions => RouteProvider.new(ApplicationResource.new(resource).klass).verifiable_routes_list)
+
+            permissions << Permission.new(
+              resource: resource.gsub(/_controller/, ''), 
+              actions: RouteProvider.new(
+                ApplicationResource.new(resource).klass
+              ).verifiable_routes_list
+            )
           end
         end
+
         permissions
       end
     end

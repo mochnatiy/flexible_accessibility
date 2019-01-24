@@ -1,16 +1,20 @@
 module FlexibleAccessibility
 	class ApplicationResource
-		attr_reader :controller
-		attr_reader :namespace
+		attr_reader :controller, :namespace
 
 	  def initialize(resource_string)
 	  	@controller = resource_string.split('/').last
-	  	@namespace = resource_string.split('/').first == @controller ? 'default' : resource_string.split('/').first
+
+			@namespace = if resource_string.split('/').first == @controller
+				'default'
+			else
+				resource_string.split('/').first
+			end
 	  end
 
 		def klass
 			if self.is_standard_resource?
-				@controller.camelize.constantize 
+				@controller.camelize.constantize
 			else
 				(@namespace.camelize + '::' + @controller.camelize).constantize
 			end

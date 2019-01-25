@@ -17,7 +17,10 @@ module FlexibleAccessibility
       end
 
       def copy_migrations
-        migration_template 'create_access_rules.rb', 'db/migrate/create_access_rules.rb'
+        migration_template(
+          'create_access_rules.rb',
+          'db/migrate/create_access_rules.rb'
+        )
       end
     end
   end

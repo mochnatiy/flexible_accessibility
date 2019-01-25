@@ -15,3 +15,5 @@ tmp
 _yardoc
 doc/
 
+.idea
+.vscode

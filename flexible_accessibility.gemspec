@@ -2,9 +2,9 @@
 
 Gem::Specification.new do |s|
   s.name = 'flexible_accessibility'
-  s.version = '0.3.16'
+  s.version = '0.3.17'
   s.authors = ['Sergei Avanesov']
-  s.date = '2014-07-08'
+  s.date = '2019-01-24'
   s.summary = 'Flexible access control system'
   s.description = 'Flexible access control system for your rails application. Based on analysis of controller actions'
   s.email = 'sergey.awanesov@gmail.com'
@@ -21,5 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'i18n'
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rubocop', '0.59.2'
 end

@@ -1,0 +1,530 @@
+---
+AllCops:
+  TargetRubyVersion: 2.5
+  DisplayCopNames: true
+  Include:
+    - 'app/**/*.rb'
+    - 'config/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'bin/**/*'
+    - 'config/initializers/*.rb'
+    - 'config/environments/*.rb'
+    - 'lib/generators/**/*'
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutalignparameters
+# -- good --
+# foo :bar,
+#   :baz
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutblockalignment
+# -- good --
+# a = case n
+# when 0
+#   x * 2
+# else
+#   y / 3
+# end
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutclassstructure
+Layout/ClassStructure:
+  Categories:
+    association:
+      - belongs_to
+      - has_one
+      - has_many
+  ExpectedOrder:
+    - constants
+    - module_inclusion
+    - initializer
+    - public_class_methods
+    - public_methods
+    - protected_methods
+    - private_methods
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutdotposition
+# -- good --
+# something.
+#   mehod
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutemptylineafterguardclause
+# -- bad --
+# def foo
+#   return if need_return?
+#   bar
+# end
+
+# -- good --
+# def foo
+#   return if need_return?
+#
+#   bar
+# end
+#
+# -- good --
+# def foo
+#   return if something?
+#   return if something_different?
+#
+#   bar
+# end
+#
+# -- also good --
+# def foo
+#   if something?
+#     do_something
+#     return if need_return?
+#   end
+# end
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutindentarray
+# -- good --
+# array = [
+#   :value
+# ]
+# and_in_a_method_call([
+#   :no_difference
+# ])
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutindenthash
+# -- good --
+# hash = {
+#   key: :value
+# }
+# and_in_a_method_call({
+#   no: :difference
+# })
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutmultilineassignmentlayout
+Layout/MultilineAssignmentLayout:
+  EnforcedStyle: same_line
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutmultilinemethodcallbracelayout
+# -- bad --
+# foo(
+#   a,
+#   b)
+#
+# -- bad --
+# foo(a,
+#   b)
+#
+# -- good --
+# foo(a,
+#   b
+# )
+#
+# -- good --
+# foo(
+#   a,
+#   b
+# )
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: new_line
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutmultilinemethodcallindentation
+# -- good --
+# while myvariable
+#   .b
+#
+#   # do something
+# end
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutspacearoundequalsinparameterdefault
+# -- bad --
+# def some_method(arg1 = :default, arg2 = nil, arg3 = [])
+#   # do something...
+# end
+#
+# -- good --
+# def some_method(arg1=:default, arg2=nil, arg3=[])
+#   # do something...
+# end
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutspaceinlambdaliteral
+# -- bad --
+# a = ->(x, y) { x + y }
+#
+# -- good --
+# a = -> (x, y) { x + y }
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
+
+# http://rubocop.readthedocs.io/en/latest/cops_lint/#lintinheritexception
+# -- bad --
+# class C < Exception; end
+#
+# -- good --
+# class C < StandardError; end
+Lint/InheritException:
+  EnforcedStyle: standard_error
+
+# http://rubocop.readthedocs.io/en/latest/cops_lint/#lintassignmentincondition
+# -- bad --
+# if some_var = true
+#   do_something
+# end
+#
+# -- good --
+# if some_var == true
+#   do_something
+# end
+#
+# -- good --
+# if (some_var = true)
+#   do_something
+# end
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
+# http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsabcsize
+Metrics/AbcSize:
+  Max: 30
+
+# http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsblocklength
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsmethodlength
+Metrics/MethodLength:
+  Max: 25
+
+# http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricslinelength
+Metrics/LineLength:
+  Max: 80
+
+# http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsparameterlists
+Metrics/ParameterLists:
+  Max: 6
+
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsclasslength
+Metrics/ClassLength:
+  Max: 150
+
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricscyclomaticcomplexity
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsperceivedcomplexity
+Metrics/PerceivedComplexity:
+  Max: 10
+
+# http://rubocop.readthedocs.io/en/latest/cops_naming/#naminguncommunicativeblockparamname
+# -- bad --
+# foo { |num1, num2| num1 * num2 }
+#
+# baz { |a, b, c| do_stuff(a, b, c) }
+#
+# -- good --
+# foo { |speed, distance| speed * distance }
+#
+# baz { |age, height, gender| do_stuff(age, height, gender) }
+Naming/UncommunicativeBlockParamName:
+  MinNameLength: 3
+  AllowNamesEndingInNumbers: false
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# http://rubocop.readthedocs.io/en/latest/cops_naming/#naminguncommunicativemethodparamname
+# -- bad --
+# def foo(num1, num2)
+#   num1 * num2
+# end
+Naming/UncommunicativeMethodParamName:
+  AllowNamesEndingInNumbers: false
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# http://rubocop.readthedocs.io/en/latest/cops_rails/#railsdate
+# -- bad --
+# Date.current
+# Date.yesterday
+# Date.today
+# date.to_time
+# date.to_time_in_current_zone
+#
+# -- good --
+# Time.zone.today
+# Time.zone.today - 1.day
+Rails/Date:
+  EnforcedStyle: strict
+
+# http://rubocop.readthedocs.io/en/latest/cops_rails/#railshttppositionalarguments
+Rails/HttpPositionalArguments:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# https://rubocop.readthedocs.io/en/latest/cops_rails/#railshasmanyorhasonedependent
+# Rails/HasManyOrHasOneDependent:
+#   Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylealias
+# Free to use alias and alias_method
+Style/Alias:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleandor
+# -- bad --
+# if foo and bar
+# end
+#
+# -- good --
+# foo.save && return
+#
+# -- good --
+# foo.save and return
+#
+# -- good--
+# if foo && bar
+# end
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleasciicomments
+# Allows comments on russian
+Style/AsciiComments:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylebarepercentliterals
+# -- bad --
+# %(He said: "#{greeting}")
+# %{She said: 'Hi'}
+
+# -- good --
+# %Q(He said: "#{greeting}")
+# %q{She said: 'Hi'}
+Style/BarePercentLiterals:
+  EnforcedStyle: percent_q
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleclassandmodulechildren
+# Feel free to use any of this:
+# class Parent
+#   class Child
+#   end
+# end
+#
+# class Parent::Child
+# end
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylecollectionmethods
+# Sometimes may work not correct, turn off in case of continuos fails
+Style/CollectionMethods:
+  Enabled: true
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylecommandliteral
+# -- bad --
+# folders = `find . -type d`.split
+#
+# -- bad --
+# `
+#   ln -s foo.example.yml foo.example
+#   ln -s bar.example.yml bar.example
+# `
+#
+# -- good --
+# folders = %x(find . -type d).split
+#
+# good
+# %x(
+#   ln -s foo.example.yml foo.example
+#   ln -s bar.example.yml bar.example
+# )
+Style/CommandLiteral:
+  EnforcedStyle: percent_x
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styledocumentation
+# Feel free to not write a documentation
+Style/Documentation:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleemptyliteral
+# Feel free to use Array.new or [] e.t.c
+Style/EmptyLiteral:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleformatstring
+# Feel free to use any type of string format
+Style/FormatString:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleformatstringtoken
+# The same as above
+Style/FormatStringToken:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylefrozenstringliteralcomment
+# Do not check frozen_string_literal
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleifunlessmodifier
+# Use any type of if/unless modifier
+Style/IfUnlessModifier:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleinlinecomment
+# -- good --
+# foo.each do |f|
+#   # Standalone comment
+#   f.bar
+# end
+#
+# -- bad --
+# foo.each do |f|
+#   f.bar # Trailing inline comment
+# end
+Style/InlineComment:
+  Enabled: true
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylelambda
+# This is default value
+# -- bad --
+# f = lambda { |x| x }
+# f = ->(x) do
+#       x
+#     end
+#
+# -- good --
+# f = ->(x) { x }
+# f = lambda do |x|
+#       x
+#     end
+Style/Lambda:
+  EnforcedStyle: line_count_dependent
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylemethodcalledondoendblock
+# -- bad --
+# a do
+#   b
+# end.c
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylenumericliterals
+# Prefer numbers without delimeters
+Style/NumericLiterals:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylenumericpredicate
+# -- bad --
+# foo.zero?
+# foo.negative?
+# bar.baz.positive?
+#
+# -- good --
+# foo == 0
+# 0 > foo
+# bar.baz > 0
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleparenthesesaroundcondition
+Style/ParenthesesAroundCondition:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylepercentliteraldelimiters
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '()'
+    '%I': '()'
+    '%w': '()'
+    '%W': '()'
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleproc
+# Allow proc and Proc.new
+Style/Proc:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleregexpliteral
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylesignalexception
+# Fail is an alias of raise. Avoid aliases, it's more cognitive load for no gain.
+# The argument that fail should be used to abort the program is wrong too,
+# there's Kernel#abort for that.
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylesymbolarray
+Style/SymbolArray:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styletrailingcommainarrayliteral
+# -- bad --
+# a = [1, 2,]
+#
+# -- good --
+# a = [
+#   1,
+#   2,
+# ]
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styletrailingcommainhashliteral
+# -- bad --
+# a = { foo: 1, bar: 2, }
+#
+# -- good --
+# a = {
+#   foo: 1,
+#   bar: 2,
+# }
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#stylewhileuntilmodifier
+# Feel free to use
+# while x < 10
+#   x += 1
+# end
+#
+# or
+# x += 1 while x < 10
+Style/WhileUntilModifier:
+  Enabled: false
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/#styleguardclause
+# Depends on line length
+# Style/GuardClause:
+#   Enabled: false
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/#stylesafenavigation
+# Style/SafeNavigation:
+#   Exclude:
+#     - 'app/models/history_bulk.rb'
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/#styleemptymethod
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# http://rubocop.readthedocs.io/en/latest/cops_bundler/#bundlerorderedgems
+Bundler/OrderedGems:
+  Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_gemspec/#gemspecordereddependencies
+Gemspec/OrderedDependencies:
+  Enabled: false

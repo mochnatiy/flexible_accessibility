@@ -8,14 +8,21 @@ module FlexibleAccessibility
     end
 
     private
+
     # Detect current controller and action and return a permission
     def current_resource
-      # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
+      # ActionController::Routing::Routes.recognize_path(
+      #   request.env["PATH_INFO"][:controller]
+      # )
+
       params[:controller]
     end
 
     def current_action
-      # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
+      # ActionController::Routing::Routes.recognize_path(
+      #   request.env["PATH_INFO"][:action]
+      # )
+
       params[:action]
     end
 
@@ -26,15 +33,24 @@ module FlexibleAccessibility
     # Expected the existing of current_user helper
     def logged_user
       return current_user if defined?(current_user)
+
       raise NoWayToDetectLoggerUserException unless defined?(current_user)
     end
 
     # Check access to route and we expected the existing of current_user helper
     def check_permission_to_route
       route_provider = RouteProvider.new(self.class)
+
       if route_provider.verifiable_routes_list.include?(current_action)
-        raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
-        AccessProvider.is_action_permitted_for_user?(current_route, logged_user) ? allow_route : deny_route
+        if logged_user.nil?
+          raise UserNotLoggedInException.new(current_route, nil)
+        end
+
+        is_permitted = AccessProvider.action_permitted_for_user?(
+          current_route, logged_user
+        )
+
+        is_permitted ? allow_route : deny_route
       elsif route_provider.non_verifiable_routes_list.include?(current_action)
         allow_route
       else
@@ -52,7 +68,9 @@ module FlexibleAccessibility
 
     # Check the @_route_permitted variable state
     def check_if_route_is_permitted
-      raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
+      unless self.class.instance_variable_get(:@_route_permitted)
+        raise AccessDeniedException.new(current_route, nil)
+      end
     end
   end
 

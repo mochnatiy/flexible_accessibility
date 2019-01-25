@@ -10,7 +10,7 @@ module FlexibleAccessibility
         end
       end
 
-      def is_action_permitted_for_user?(permission, user)
+      def action_permitted_for_user?(permission, user)
         preload_permissions(user)
 
         user.instance_variable_get(:@_available_permissions).include? permission

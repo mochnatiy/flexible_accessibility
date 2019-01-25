@@ -46,7 +46,7 @@ module FlexibleAccessibility
           raise UserNotLoggedInException.new(current_route, nil)
         end
 
-        is_permitted = AccessProvider.is_action_permitted_for_user?(
+        is_permitted = AccessProvider.action_permitted_for_user?(
           current_route, logged_user
         )
 

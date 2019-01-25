@@ -13,6 +13,7 @@ AllCops:
     - 'bin/**/*'
     - 'config/initializers/*.rb'
     - 'config/environments/*.rb'
+    - 'lib/generators/**/*'
 
 # http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutalignparameters
 # -- good --
@@ -109,6 +110,10 @@ Layout/IndentArray:
 Layout/IndentHash:
   EnforcedStyle: consistent
 
+# http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutmultilineassignmentlayout
+Layout/MultilineAssignmentLayout:
+  EnforcedStyle: same_line
+
 # http://rubocop.readthedocs.io/en/latest/cops_layout/#layoutmultilinemethodcallbracelayout
 # -- bad --
 # foo(
@@ -193,7 +198,7 @@ Lint/AssignmentInCondition:
 
 # http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsabcsize
 Metrics/AbcSize:
-  Max: 12
+  Max: 30
 
 # http://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsblocklength
 Metrics/BlockLength:
@@ -218,7 +223,11 @@ Metrics/ClassLength:
 
 # https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricscyclomaticcomplexity
 Metrics/CyclomaticComplexity:
-  Max: 8
+  Max: 10
+
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsperceivedcomplexity
+Metrics/PerceivedComplexity:
+  Max: 10
 
 # http://rubocop.readthedocs.io/en/latest/cops_naming/#naminguncommunicativeblockparamname
 # -- bad --
@@ -447,6 +456,10 @@ Style/PercentLiteralDelimiters:
 # Allow proc and Proc.new
 Style/Proc:
   Enabled: false
+
+# http://rubocop.readthedocs.io/en/latest/cops_style/#styleregexpliteral
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
 
 # http://rubocop.readthedocs.io/en/latest/cops_style/#stylesignalexception
 # Fail is an alias of raise. Avoid aliases, it's more cognitive load for no gain.

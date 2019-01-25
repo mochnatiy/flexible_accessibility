@@ -1,7 +1,6 @@
 module FlexibleAccessibility
   module ControllerMethods
     module ClassMethods
-
       # Compatibility with previous versions
       def skip_authorization_here
         authorize skip: :all
@@ -28,18 +27,17 @@ module FlexibleAccessibility
         end
 
         %i(only except skip).each do |key|
-          unless args[key].nil?
-            if args[key].to_s == 'all' && key == :skip
-              result[key] = [args[key].to_s].to_set
-              next
-            end
+          next if args[key].nil?
 
-            unless args[key].instance_of?(Array)
-              raise ActionsValueException
-            end
+          if args[key].to_s == 'all' && key == :skip
+            result[key] = [args[key].to_s].to_set
 
-            result[key] = args[key].map!{ |v| v.to_s }.to_set
+            next
           end
+
+          raise ActionsValueException unless args[key].instance_of?(Array)
+
+          result[key] = args[key].map!(&:to_s).to_set
         end
 
         result
@@ -47,25 +45,31 @@ module FlexibleAccessibility
 
       # Validate arguments from macro call
       def validate_arguments(args={})
-        return if args.count == 1 && args.keys.include?(:all)
+        return if args.count == 1 && args.key?(:all)
 
         only_options = args[:only] || Set.new
-        except_options =  args[:except] || Set.new
+        except_options = args[:except] || Set.new
         skip_options = args[:skip] || Set.new
 
         unless (only_options & except_options).empty? &&
-          (only_options & skip_options).empty?
+               (only_options & skip_options).empty?
 
           raise IncorrectArgumentException.new(
             nil,
-            'The same arguments shouldn\'t be used with different keys excluding except and skip'
+            <<-TXT
+              The same arguments shouldn't be used
+              with different keys excluding except and skip
+            TXT
           )
         end
 
         if args[:skip] == 'all' && args.count > 1
           raise IncorrectArgumentException.new(
             nil,
-            'Option \'skip\' with argument \'all\' shouldn\'t be used with another options'
+            <<-TXT
+              Option 'skip' with argument 'all' shouldn't be used
+              with another options
+            TXT
           )
         end
       end
@@ -75,7 +79,7 @@ module FlexibleAccessibility
     def has_access?(permission, user)
       raise UnknownUserException if user.nil?
 
-      AccessProvider.is_action_permitted_for_user?(permission, user)
+      AccessProvider.action_permitted_for_user?(permission, user)
     end
 
     # Callback is needed for include methods and define helper method

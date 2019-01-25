@@ -4,6 +4,10 @@ A simple library for setting access rules, based on analysis of current resource
 
 [![Code Climate](https://codeclimate.com/github/mochnatiy/flexible_accessibility.png)](https://codeclimate.com/github/mochnatiy/flexible_accessibility)
 
+[![CircleCI](https://circleci.com/gh/mochnatiy/flexible_accessibility/tree/master.svg?style=svg)](https://circleci.com/gh/mochnatiy/flexible_accessibility/tree/master)
+
+[![Gem Version](https://badge.fury.io/rb/flexible_accessibility.svg)](https://badge.fury.io/rb/flexible_accessibility)
+
 Installation:
 
 		gem install flexible_accessibility
@@ -45,6 +49,9 @@ Usage:
         authorize skip: :all
 
 ======================
+
+# TODO: Review design
+# TODO: Add tests
 
 ## Copyright
 Copyright (c) 2012-2019 Sergei Avanesov

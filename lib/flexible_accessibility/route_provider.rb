@@ -1,11 +1,13 @@
 module FlexibleAccessibility
   class RouteProvider
-    @@routes ||= {}
-
     def initialize(controller=nil)
       @path = "#{::Rails.root}/app/controllers/"
       @controllers = {}
       @current_controller = controller
+    end
+
+    def routes
+      @@routes ||= {}
     end
 
     def app_controllers
@@ -13,9 +15,9 @@ module FlexibleAccessibility
     end
 
     def app_routes
-      app_routes_as_hash if @@routes.empty?
+      app_routes_as_hash if routes.empty?
 
-      @@routes
+      routes
     end
 
     def verifiable_routes_list
@@ -55,11 +57,12 @@ module FlexibleAccessibility
 
     def available_routes_list
       available_routes =
-        self.app_routes[@current_controller.to_s.gsub(/Controller/, '')]
+        app_routes[@current_controller.to_s.gsub(/Controller/, '')]
 
       # available_routes = self.action_methods if available_routes.nil?
 
       raise NoWayToDetectAvailableRoutesException if available_routes.nil?
+
       available_routes.to_set
     end
 
@@ -70,21 +73,19 @@ module FlexibleAccessibility
       (Dir.entries(path) - invalid_entries).each do |entry|
         if File.directory?(path + entry)
           app_controllers_recursive(path + entry + '/')
-        else
-          if File.extname(entry) == '.rb'
-            parent_directory = File.dirname(path + entry).split(/\//).last
+        elsif File.extname(entry) == '.rb'
+          parent_directory = File.dirname(path + entry).split(/\//).last
 
-            container = if parent_directory == 'controllers'
-              'default'
-            else
-              parent_directory
-            end
+          container = if parent_directory == 'controllers'
+            'default'
+          else
+            parent_directory
+          end
 
-            @controllers[container.to_sym] ||= []
+          @controllers[container.to_sym] ||= []
 
-            unless File.basename(path + entry, '.*') == 'application_controller'
-              @controllers[container.to_sym] << File.basename(path + entry, '.*')
-            end
+          unless File.basename(path + entry, '.*') == 'application_controller'
+            @controllers[container.to_sym] << File.basename(path + entry, '.*')
           end
         end
       end
@@ -96,11 +97,11 @@ module FlexibleAccessibility
       Rails.application.routes.routes.each do |route|
         controller = route.defaults[:controller]
 
-        unless controller.nil?
-          key = controller.split('/').map { |p| p.camelize }.join('::')
-          @@routes[key] ||= []
-          @@routes[key] << route.defaults[:action]
-        end
+        next if controller.nil?
+
+        key = controller.split('/').map(&:camelize).join('::')
+        routes[key] ||= []
+        routes[key] << route.defaults[:action]
       end
     end
   end

@@ -16,42 +16,43 @@ module FlexibleAccessibility
     end
 
     private
+
     def default_message
       'An exception is occurred'
     end
   end
 
-	class AccessDeniedException < FlexibleAccessibilityException
-
+  class AccessDeniedException < FlexibleAccessibilityException
     def message
       I18n.t('flexible_accessibility.errors.access_denied', action: @action)
     end
 
     private
+
     def default_message
-		  "The access for resource #{@action} is denied"
+      "The access for resource #{@action} is denied"
     end
-	end
+  end
 
   class UserNotLoggedInException < FlexibleAccessibilityException
-
     def message
       I18n.t('flexible_accessibility.errors.user_is_not_logged_in')
     end
 
     private
+
     def default_message
       'Current user is not logged in'
     end
   end
 
   class NoWayToDetectLoggerUserException < FlexibleAccessibilityException
-
     def message
       I18n.t('flexible_accessibility.errors.no_way_to_detect_logged_user')
     end
 
     private
+
     def default_message
       <<-TXT
         No way to detect a logged user,
@@ -61,19 +62,18 @@ module FlexibleAccessibility
   end
 
   class UnknownUserException < FlexibleAccessibilityException
-
     def message
       I18n.t('flexible_accessibility.errors.unknown_user')
     end
 
     private
+
     def default_message
       'Probably you have forgot to send a user in has_access?'
     end
   end
 
   class ActionsValueException < FlexibleAccessibilityException
-
     def message
       I18n.t('flexible_accessibility.errors.incorrect_value_of_actions')
     end
@@ -88,7 +88,6 @@ module FlexibleAccessibility
   end
 
   class IncorrectArgumentException < FlexibleAccessibilityException
-
     private
 
     def default_message
@@ -97,7 +96,6 @@ module FlexibleAccessibility
   end
 
   class NoWayToDetectAvailableRoutesException < FlexibleAccessibilityException
-
     private
 
     def default_message
